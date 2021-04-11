@@ -3,8 +3,10 @@ using namespace std;
 #define tab "\t"
 //Function templates
 
-void FillRand(int arr[], const int n);
-void FillRand(int** arr, const int m, const int n);
+void FillRand(double arr[], const int n);
+template<typename T>void FillRand(T arr[], const int n);
+void FillRand(double** arr, const int m, const int n);
+template<typename T>void FillRand(T** arr, const int m, const int n);
 
 template<typename T>//T - шаблонный тип данных
 void Print(T arr[], const int n);
@@ -26,7 +28,7 @@ template<typename T>void pop_row_back(T**& arr, int& m, const int n);
 template<typename T>void pop_row_front(T**& arr, int& m, const int n);
 template<typename T>void erase_row(T**& arr, int& m, const int n, int index);
 
-#define DYNAMIC_MEMORY_1
+//#define DYNAMIC_MEMORY_1
 
 void main()
 {
@@ -82,11 +84,11 @@ void main()
 	cout << "Введите количество строк: "; cin >> r;
 	cout << "Введите количество столбцов: "; cin >> c;
 	//1)создаем массив указателей
-	int** arr2 = new int*[r];
+	double** arr2 = new double*[r];
 	//2)выделяем память под строки двумерного массива:
 	for (int i = 0; i < r; i++)
 	{
-		arr2[i] = new int[c] {};
+		arr2[i] = new double[c] {};
 	}
 	//----------------ИСПОЛЬЗОВАНИЕ ДВУМЕРНОГО ДИНАМИЧЕСКОГО МАССИВА--------------
 	FillRand(arr2, r, c);
@@ -100,7 +102,7 @@ void main()
 	push_row_front(arr2, r, c);
 	Print(arr2, r, c);
 
-	//int index;
+	int index;
 	cout << "Введите индекс добавляемой пустой строки: "; cin >> index;
 	insert_row(arr2, r, c, index);
 	Print(arr2, r, c);
@@ -131,16 +133,34 @@ void main()
 
 }
 
-
-
-void FillRand(int arr[], const int n)
+void FillRand(double arr[], const int n)
+{
+	cout << typeid(arr[0]).name() << endl;
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = rand() % 1000;
+		arr[i] /= 100;
+	}
+}
+template<typename T>void FillRand(T arr[], const int n)
 {
 	for (int i = 0; i < n; i++)
 	{
 		arr[i] = rand() % 100;
 	}
 }
-void FillRand(int** arr, const int m, const int n)
+void FillRand(double** arr, const int m, const int n)
+{
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			arr[i][j] = double(rand() % 10000)/100;
+		}
+	}
+}
+template<typename T>
+void FillRand(T** arr, const int m, const int n)
 {
 	for (int i = 0; i < m; i++)
 	{
